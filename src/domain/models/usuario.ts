@@ -1,4 +1,4 @@
-class Usuario {
+export default class Usuario {
     #id: string;
     #telefone: number;
     #nome: string;
