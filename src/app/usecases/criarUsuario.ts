@@ -1,5 +1,5 @@
 import Usuario from "../../domain/models/usuario";
-import IRepositorioUsuario from "../gateways/iRepositorioUsuario"
+import IRepositorioUsuario from "../gateways/iGatewayUsuario"
 
 export default class CriarUsuario {
     #repositorio: IRepositorioUsuario;
