@@ -1,9 +1,9 @@
 import Usuario from "../../domain/models/usuario";
-import IRepositorioUsuario from "../gateways/iGatewayUsuario"
+import IGatewayUsuario from "../gateways/iGatewayUsuario"
 
 export default class CriarUsuario {
-    #repositorio: IRepositorioUsuario;
-    constructor(repositorio: IRepositorioUsuario) {
+    #repositorio: IGatewayUsuario;
+    constructor(repositorio: IGatewayUsuario) {
         this.#repositorio = repositorio
     }
     public cadastrar(usuario: Usuario): Usuario {
