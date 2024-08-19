@@ -2,13 +2,22 @@ import Usuario from "../../domain/models/usuario";
 import IGatewayUsuario from "../gateways/iGatewayUsuario";
 
 export default class CriarUsuario {
-    #repo: IGatewayUsuario;
+    private gatewayUsuario: IGatewayUsuario;
 
-    constructor(gateway: IGatewayUsuario) {
-        this.#repo = gateway;
+    constructor(gatewayUsuario: IGatewayUsuario) {
+        this.gatewayUsuario = gatewayUsuario;
     }
 
-    public async cadastrar(usuario: Usuario): Promise<Usuario> {
-        return await this.#repo.cadastrarUsuario(usuario);
+    async execute(dadosUsuario: { id: string, telefone: number, nome: string, senha: string }): Promise<Usuario> {
+        const { id, telefone, nome, senha } = dadosUsuario;
+
+        if (!id || !telefone || !nome || !senha) {
+            throw new Error('Todos os campos são obrigatórios.');
+        }
+
+        const novoUsuario = new Usuario(id, telefone, nome, senha);
+        const usuarioCriado = await this.gatewayUsuario.cadastrarUsuario(novoUsuario);
+
+        return usuarioCriado;
     }
 }
