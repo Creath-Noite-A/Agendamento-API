@@ -13,20 +13,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const usuario_1 = __importDefault(require("../../domain/models/usuario"));
-class CriarUsuario {
-    constructor(gatewayUsuario) {
-        this.gatewayUsuario = gatewayUsuario;
-    }
-    execute(dadosUsuario) {
+const supabaseClient_1 = require("../../infra/supabaseClient");
+class gatewayUsuarioSupabase {
+    cadastrarUsuario(usuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, telefone, nome, senha } = dadosUsuario;
-            if (!id || !telefone || !nome || !senha) {
-                throw new Error('Todos os campos são obrigatórios.');
+            const { data, error } = yield supabaseClient_1.supabase
+                .from('usuarios')
+                .insert([
+                { id: usuario.id, telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
+            ]);
+            if (error) {
+                throw new Error(`Erro ao cadastrar usuário: ${error.message}`);
             }
-            const novoUsuario = new usuario_1.default(id, telefone, nome, senha);
-            const usuarioCriado = yield this.gatewayUsuario.cadastrarUsuario(novoUsuario);
-            return usuarioCriado;
+            return usuario;
+        });
+    }
+    listarUsuarios() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data, error } = yield supabaseClient_1.supabase
+                .from('usuarios')
+                .select('*');
+            if (error) {
+                throw new Error(`Erro ao listar usuários: ${error.message}`);
+            }
+            return data.map((item) => new usuario_1.default(item.id, item.telefone, item.nome, item.senha));
         });
     }
 }
-exports.default = CriarUsuario;
+exports.default = gatewayUsuarioSupabase;
