@@ -8,7 +8,7 @@ export default class CriarUsuario {
         this.#repo = gateway;
     }
 
-    public cadastrar(usuario: Usuario): Usuario {
+    public async cadastrar(usuario: Usuario): Promise<Usuario> {
         return this.#repo.cadastrarUsuario(usuario);
     }
 }
