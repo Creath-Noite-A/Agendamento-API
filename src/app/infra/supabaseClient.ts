@@ -1,3 +1,4 @@
+// @ts-ignore
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://qreniqtdziaelixjadbg.supabase.co';
