@@ -9,6 +9,6 @@ export default class CriarUsuario {
     }
 
     public async cadastrar(usuario: Usuario): Promise<Usuario> {
-        return this.#repo.cadastrarUsuario(usuario);
+        return await this.#repo.cadastrarUsuario(usuario);
     }
 }
