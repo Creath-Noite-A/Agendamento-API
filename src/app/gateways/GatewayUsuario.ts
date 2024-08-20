@@ -4,11 +4,10 @@ import { supabase } from "../../infra/supabaseClient";
 
 export default class GatewayUsuario implements iGatewayUsuario {
     async cadastrarUsuario(usuario: Usuario): Promise<Usuario> {
+        const { id, telefone, nome, senha} = usuario;
         const { data, error } = await supabase
             .from('usuarios')
-            .insert([
-                { id: usuario.id, telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
-            ]);
+            .insert([{ id, telefone, nome, senha }]);
 
         if (error) {
             throw new Error(`Erro ao cadastrar usuário: ${error.message}`);
@@ -26,6 +25,11 @@ export default class GatewayUsuario implements iGatewayUsuario {
             throw new Error(`Erro ao listar usuários: ${error.message}`);
         }
 
-        return data.map((item: any) => new Usuario(item.id, item.telefone, item.nome, item.senha));
+        return data.map((item: any) => new Usuario(
+            item.id,
+            item.telefone,
+            item.nome,
+            item.senha
+        ));
     }
 }

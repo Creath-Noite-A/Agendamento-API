@@ -14,14 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const usuario_1 = __importDefault(require("../../domain/models/usuario"));
 const supabaseClient_1 = require("../../infra/supabaseClient");
-class gatewayUsuarioSupabase {
+class GatewayUsuario {
     cadastrarUsuario(usuario) {
         return __awaiter(this, void 0, void 0, function* () {
+            const { id, telefone, nome, senha } = usuario;
             const { data, error } = yield supabaseClient_1.supabase
                 .from('usuarios')
-                .insert([
-                { id: usuario.id, telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
-            ]);
+                .insert([{ id, telefone, nome, senha }]);
             if (error) {
                 throw new Error(`Erro ao cadastrar usuário: ${error.message}`);
             }
@@ -40,4 +39,4 @@ class gatewayUsuarioSupabase {
         });
     }
 }
-exports.default = gatewayUsuarioSupabase;
+exports.default = GatewayUsuario;
