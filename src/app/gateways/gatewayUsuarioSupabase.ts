@@ -2,7 +2,7 @@ import iGatewayUsuario from "./IGatewayUsuario";
 import Usuario from "../../domain/models/usuario";
 import { supabase } from "../../infra/supabaseClient";
 
-export default class gatewayUsuarioSupabase implements iGatewayUsuario {
+export default class GatewayUsuarioSupabase implements iGatewayUsuario {
     async cadastrarUsuario(usuario: Usuario): Promise<Usuario> {
         const { data, error } = await supabase
             .from('usuarios')
