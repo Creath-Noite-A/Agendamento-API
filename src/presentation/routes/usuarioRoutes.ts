@@ -1,8 +1,8 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, Router } from 'express';
 import CriarUsuario from '../../app/usecases/criarUsuario';
 import GatewayUsuario from '../../app/gateways/GatewayUsuario';
 
-const router = express.Router();
+const router = Router();
 const gatewayUsuario = new GatewayUsuario();
 const criarUsuario = new CriarUsuario(gatewayUsuario);
 
