@@ -1,10 +1,11 @@
-import iGatewayUsuario from "./IGatewayUsuario";
+import IGatewayUsuario from "./IGatewayUsuario";
 import Usuario from "../../domain/models/usuario";
 import { supabase } from "../../infra/supabaseClient";
 
-export default class GatewayUsuario implements iGatewayUsuario {
+export default class GatewayUsuario implements IGatewayUsuario {
     async cadastrarUsuario(usuario: Usuario): Promise<Usuario> {
         const { id, telefone, nome, senha} = usuario;
+        
         const { data, error } = await supabase
             .from('usuarios')
             .insert([{ id, telefone, nome, senha }]);
