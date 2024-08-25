@@ -1,7 +1,9 @@
-import Usuario from "../../domain/models/usuario";
-import IGatewayUsuario from "../gateways/IGatewayUsuario";
+import { v4 } from 'uuid';
 
-export default class CriarUsuario {
+import Usuario from "../../domain/models/usuario";
+import IGatewayUsuario from "../gateways/interfaces/IGatewayUsuario";
+
+export default class CadastrarUsuario {
     private gateway: IGatewayUsuario;
 
     constructor(gateway: IGatewayUsuario) {
@@ -9,16 +11,17 @@ export default class CriarUsuario {
     }
 
     async execute(dadosUsuario: {
-        id: string,
         telefone: number,
         nome: string,
         senha: string
     }): Promise<Usuario> {
-        const { id, telefone, nome, senha } = dadosUsuario;
+        const { telefone, nome, senha } = dadosUsuario;
 
-        if (!id || !telefone || !nome || !senha) {
+        if ( !telefone || !nome || !senha) {
             throw new Error('Todos os campos são obrigatórios.');
         }
+
+        const id = v4();
 
         return await this.gateway.cadastrarUsuario(
             new Usuario(id, telefone, nome, senha)

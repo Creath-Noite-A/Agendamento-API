@@ -1,4 +1,4 @@
-import IGatewayUsuario from "./IGatewayUsuario";
+import IGatewayUsuario from "./interfaces/IGatewayUsuario";
 import Usuario from "../../domain/models/usuario";
 import { supabase } from "../../infra/supabaseClient";
 
@@ -32,5 +32,22 @@ export default class GatewayUsuario implements IGatewayUsuario {
             item.nome,
             item.senha
         ));
+    }
+
+    async pesquisarUsuarioIdPorTelefone(telefone: number): Promise<string> {
+        const { data, error } = await supabase
+            .from('usuarios')
+            .select()
+            .is('telefone', telefone);
+        
+        if(error) {
+            throw new Error(`Erro ao pesquisar id de usuário por telefone: ${error.message}`);
+        }
+
+        if(data.length > 1) {
+            throw new Error(`Problema ao pesquisar usuário: id duplicado no banco de dados`);
+        }
+
+        return data[0].id;
     }
 }

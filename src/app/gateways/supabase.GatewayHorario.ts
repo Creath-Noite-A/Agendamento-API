@@ -1,14 +1,14 @@
 import Horario from "../../domain/models/horario";
-import IGatewayHorario from "./IGatewayHorario";
+import IGatewayHorario from "./interfaces/IGatewayHorario";
 import { supabase } from "../../infra/supabaseClient";
 
 export default class GatewayHorario implements IGatewayHorario {
     async gerarHorario(horario: Horario): Promise<Horario> {
-        const { dias, hora, minutos } = horario;
+        const { dia, hora, minutos } = horario;
         
         const { data, error } = await supabase
             .from('horarios')
-            .insert([{ dias, hora, minutos }]);
+            .insert([{ dia, hora, minutos }]);
 
         if (error) {
             throw new Error(`Erro ao cadastrar horário: ${error.message}`);
@@ -27,7 +27,7 @@ export default class GatewayHorario implements IGatewayHorario {
         }
 
         return data.map((item: any) => new Horario(
-            item.dias,
+            item.dia,
             item.hora,
             item.minutos
         ));

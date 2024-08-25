@@ -1,10 +1,10 @@
 export default class Horario {
-    dias: Array<number>;
+    dia: number;
     hora: number;
     minutos: number;
     
     constructor(
-        dias: Array<number>,
+        dia: number,
         hora: number, minutos: number
     ) {
         if(
@@ -18,7 +18,7 @@ export default class Horario {
             throw new TypeError('Parâmetros de horário inválidos');
         }
 
-        this.dias = dias;
+        this.dia = dia;
         this.hora = hora;
         this.minutos = minutos;
     }

@@ -1,7 +1,7 @@
 import Horario from "../../domain/models/horario";
-import IGatewayHorario from "../gateways/IGatewayHorario";
+import IGatewayHorario from "../gateways/interfaces/IGatewayHorario";
 
-export default class GerarHorario {
+export default class DisponibilizarHorario {
     private gateway: IGatewayHorario;
 
     constructor(gateway: IGatewayHorario) {
@@ -9,18 +9,18 @@ export default class GerarHorario {
     }
 
     async execute(dadosHorario: {
-        dias: Array<number>,
+        dia: number,
         hora: number,
         minutos: number
     }): Promise<Horario> {
-        const { dias, hora, minutos } = dadosHorario;
+        const { dia, hora, minutos } = dadosHorario;
 
-        if(!dias || !hora || !minutos) {
+        if(!dia || !hora || !minutos) {
             throw new TypeError('Erro: Parâmetro(s) nulo(s)');
         }
 
         return await this.gateway.gerarHorario(
-            new Horario(dias, hora, minutos)
+            new Horario(dia, hora, minutos)
         );
     }
 }
