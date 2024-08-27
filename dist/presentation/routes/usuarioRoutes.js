@@ -22,7 +22,7 @@ router.use(express_1.default.json());
 router.post('/usuario', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id, telefone, nome, senha } = req.body;
-        const usuarioCriado = yield criarUsuario.execute({ id, telefone, nome, senha });
+        const usuarioCriado = yield criarUsuario.execute({ telefone, nome, senha });
         res.status(201).json(usuarioCriado);
     }
     catch (error) {

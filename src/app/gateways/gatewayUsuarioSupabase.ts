@@ -7,7 +7,7 @@ export default class gatewayUsuarioSupabase implements iGatewayUsuario {
         const { data, error } = await supabase
             .from('usuarios')
             .insert([
-                { id: usuario.id, telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
+                { telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
             ]);
 
         if (error) {
@@ -26,6 +26,6 @@ export default class gatewayUsuarioSupabase implements iGatewayUsuario {
             throw new Error(`Erro ao listar usuários: ${error.message}`);
         }
 
-        return data.map((item: any) => new Usuario(item.id, item.telefone, item.nome, item.senha));
+        return data.map((item: any) => new Usuario(item.telefone, item.nome, item.senha));
     }
 }

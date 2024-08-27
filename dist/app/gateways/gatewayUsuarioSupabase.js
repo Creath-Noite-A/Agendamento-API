@@ -20,7 +20,7 @@ class gatewayUsuarioSupabase {
             const { data, error } = yield supabaseClient_1.supabase
                 .from('usuarios')
                 .insert([
-                { id: usuario.id, telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
+                { telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
             ]);
             if (error) {
                 throw new Error(`Erro ao cadastrar usuário: ${error.message}`);
@@ -36,7 +36,7 @@ class gatewayUsuarioSupabase {
             if (error) {
                 throw new Error(`Erro ao listar usuários: ${error.message}`);
             }
-            return data.map((item) => new usuario_1.default(item.id, item.telefone, item.nome, item.senha));
+            return data.map((item) => new usuario_1.default(item.telefone, item.nome, item.senha));
         });
     }
 }

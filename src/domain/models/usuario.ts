@@ -1,22 +1,12 @@
 export default class Usuario {
-    #id: string;
     #telefone: number;
     #nome: string;
     #senha: string
 
-    constructor(id: string, telefone: number, nome: string, senha: string) {
-        this.#id = id;
+    constructor(telefone: number, nome: string, senha: string) {
         this.#telefone = telefone;
         this.#nome = nome;
         this.#senha = senha;
-    }
-
-    get id(): string {
-        return this.#id;
-    }
-
-    set id(value: string) {
-        this.#id = value;
     }
 
     get telefone(): number {

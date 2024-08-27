@@ -10,24 +10,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Usuario_id, _Usuario_telefone, _Usuario_nome, _Usuario_senha;
+var _Usuario_telefone, _Usuario_nome, _Usuario_senha;
 Object.defineProperty(exports, "__esModule", { value: true });
 class Usuario {
-    constructor(id, telefone, nome, senha) {
-        _Usuario_id.set(this, void 0);
+    constructor(telefone, nome, senha) {
         _Usuario_telefone.set(this, void 0);
         _Usuario_nome.set(this, void 0);
         _Usuario_senha.set(this, void 0);
-        __classPrivateFieldSet(this, _Usuario_id, id, "f");
         __classPrivateFieldSet(this, _Usuario_telefone, telefone, "f");
         __classPrivateFieldSet(this, _Usuario_nome, nome, "f");
         __classPrivateFieldSet(this, _Usuario_senha, senha, "f");
-    }
-    get id() {
-        return __classPrivateFieldGet(this, _Usuario_id, "f");
-    }
-    set id(value) {
-        __classPrivateFieldSet(this, _Usuario_id, value, "f");
     }
     get telefone() {
         return __classPrivateFieldGet(this, _Usuario_telefone, "f");
@@ -48,5 +40,5 @@ class Usuario {
         __classPrivateFieldSet(this, _Usuario_senha, value, "f");
     }
 }
-_Usuario_id = new WeakMap(), _Usuario_telefone = new WeakMap(), _Usuario_nome = new WeakMap(), _Usuario_senha = new WeakMap();
+_Usuario_telefone = new WeakMap(), _Usuario_nome = new WeakMap(), _Usuario_senha = new WeakMap();
 exports.default = Usuario;

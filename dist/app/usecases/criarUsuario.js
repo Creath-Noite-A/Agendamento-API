@@ -19,11 +19,11 @@ class CriarUsuario {
     }
     execute(dadosUsuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, telefone, nome, senha } = dadosUsuario;
-            if (!id || !telefone || !nome || !senha) {
+            const { telefone, nome, senha } = dadosUsuario;
+            if (!telefone || !nome || !senha) {
                 throw new Error('Todos os campos são obrigatórios.');
             }
-            const novoUsuario = new usuario_1.default(id, telefone, nome, senha);
+            const novoUsuario = new usuario_1.default(telefone, nome, senha);
             const usuarioCriado = yield this.gatewayUsuario.cadastrarUsuario(novoUsuario);
             return usuarioCriado;
         });
