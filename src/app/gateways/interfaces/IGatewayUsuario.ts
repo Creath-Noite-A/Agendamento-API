@@ -1,7 +1,8 @@
-import Usuario from '../../../domain/models/usuario';
+import Usuario from '../../../domain/models/Usuario';
 
 export default interface IGatewayUsuario {
     cadastrarUsuario(usuario: Usuario): Promise<Usuario>;
+    loginUsuario(usuario: Usuario): Promise<Usuario>;
     listarUsuarios(): Promise<Array<Usuario>>;
-    pesquisarUsuarioIdPorTelefone(telefone: number): Promise<string>;
+    pesquisarUsuarioIdPorTelefone(telefone: string): Promise<string>;
 }

@@ -1,11 +1,10 @@
 import { v4 } from "uuid";
 
-import Agendamento from "../../domain/models/agendamento";
-import Usuario from "../../domain/models/usuario";
+import Agendamento from "../../domain/models/Agendamento";
 import IGatewayAgendamento from "../gateways/interfaces/IGatewayAgendamento";
 import IGatewayUsuario from "../gateways/interfaces/IGatewayUsuario";
 
-export default class MarcarAgendamento {
+export default class CriarAgendamento {
     private gatewayUsuario: IGatewayUsuario;
     private gatewayAgendamento: IGatewayAgendamento;
 
@@ -17,11 +16,13 @@ export default class MarcarAgendamento {
         this.gatewayAgendamento = gatewayAgendamento;
     }
     
-    async execute(usuario: Usuario, dadosAgendamento: {
+    async execute(dadosUsuario: {
+        telefone: string
+    }, dadosAgendamento: {
         dataMarcada: Date
     }): Promise<Agendamento> {
         const { dataMarcada } = dadosAgendamento;
-        const { telefone } = usuario;
+        const { telefone } = dadosUsuario;
 
         if(!telefone || !dataMarcada) {
             throw new TypeError('Erro: Parâmetro(s) nulo(s)');

@@ -1,4 +1,4 @@
-import Agendamento from "../../../domain/models/agendamento";
+import Agendamento from "../../../domain/models/Agendamento";
 
 export default interface IGatewayAgendamento {
     criarAgendamento(agendamento: Agendamento): Promise<Agendamento>;

@@ -1,5 +1,5 @@
-import Agendamento from '../../domain/models/agendamento';
-import { supabase } from '../../infra/supabaseClient';
+import Agendamento from '../../domain/models/Agendamento';
+import { supabase } from '../../infra/client.Supabase';
 import IGatewayAgendamento from './interfaces/IGatewayAgendamento';
 
 export default class GatewayAgendamento implements IGatewayAgendamento {
@@ -19,6 +19,7 @@ export default class GatewayAgendamento implements IGatewayAgendamento {
 
     async listarAgendamentosComFiltro(agendamento: Agendamento): Promise<Array<Agendamento>> {
         
+
         return new Array<Agendamento>();
     }
 }

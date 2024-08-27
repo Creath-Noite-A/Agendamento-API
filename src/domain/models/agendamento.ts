@@ -1,9 +1,9 @@
 export default class Agendamento {
-    id: string;
-    usuarioId: string;
-    dataMarcada: Date;
+    id: string | null;
+    usuarioId: string | null;
+    dataMarcada: Date | null;
 
-    constructor(id: string, usuarioId: string, dataMarcada: Date) {
+    constructor(id: string | null, usuarioId: string | null, dataMarcada: Date | null) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.dataMarcada = dataMarcada;

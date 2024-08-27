@@ -1,0 +1,8 @@
+POST http://localhost:8000/criarUsuario
+Content-Type: application/json
+
+{
+    "telefone": "13992014999",
+    "nome": "Levi Moedas",
+    "senha": "Senha123"
+}

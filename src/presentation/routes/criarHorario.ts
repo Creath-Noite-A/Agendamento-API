@@ -1,23 +1,23 @@
 import express, { Request, Response, Router } from 'express';
 
-import CriarUsuario from '../../app/usecases/CriarUsuario';
-import GatewayUsuario from '../../app/gateways/supabase.GatewayUsuario';
+import CriarHorario from '../../app/usecases/CriarHorario';
+import GatewayHorario from '../../app/gateways/supabase.GatewayHorario';
 
 const router = Router();
-const gatewayUsuario = new GatewayUsuario();
-const criarUsuario = new CriarUsuario(gatewayUsuario);
+const gatewayHorario = new GatewayHorario();
+const criarHorario = new CriarHorario(gatewayHorario);
 
 router.use(express.json());
 
 router.post('/', async (req: Request, res: Response) => {
     try {
-        const { telefone, nome, senha } = req.body;
+        const { dia, hora } = req.body;
 
-        const usuarioCriado = await criarUsuario.execute(
-            { telefone, nome, senha }
+        const horarioCriado = await criarHorario.execute(
+            { dia, hora }
         );
 
-        res.status(201).json(usuarioCriado);
+        res.status(201).json(horarioCriado);
     } catch (error) {
         if (error instanceof Error) {
             res.status(400).json({ error: error.message });

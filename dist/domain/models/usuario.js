@@ -7,5 +7,11 @@ class Usuario {
         this.nome = nome;
         this.senha = senha;
     }
+    pronto() {
+        if (!this.id || !this.telefone || !this.nome || !this.senha) {
+            return false;
+        }
+        return true;
+    }
 }
 exports.default = Usuario;

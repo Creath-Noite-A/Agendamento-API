@@ -36,24 +36,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importStar(require("express"));
-const criarUsuario_1 = __importDefault(require("../../app/usecases/criarUsuario"));
-const GatewayUsuario_1 = __importDefault(require("../../app/gateways/GatewayUsuario"));
+const CriarAgendamento_1 = __importDefault(require("../../app/usecases/CriarAgendamento"));
+const supabase_GatewayUsuario_1 = __importDefault(require("../../app/gateways/supabase.GatewayUsuario"));
+const supabase_GatewayAgendamento_1 = __importDefault(require("../../app/gateways/supabase.GatewayAgendamento"));
 const router = (0, express_1.Router)();
-const gatewayUsuario = new GatewayUsuario_1.default();
-const criarUsuario = new criarUsuario_1.default(gatewayUsuario);
+const gatewayUsuario = new supabase_GatewayUsuario_1.default();
+const gatewayAgendamento = new supabase_GatewayAgendamento_1.default();
+const criarAgendamento = new CriarAgendamento_1.default(gatewayUsuario, gatewayAgendamento);
 router.use(express_1.default.json());
-router.post('/usuario', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id, telefone, nome, senha } = req.body;
-        const usuarioCriado = yield criarUsuario.execute({ id, telefone, nome, senha });
-        res.status(201).json(usuarioCriado);
+        const { telefone, dataMarcada } = req.body;
+        const agendamentoCriado = yield criarAgendamento.execute({ telefone }, { dataMarcada });
+        res.status(201).json(agendamentoCriado);
     }
     catch (error) {
         if (error instanceof Error) {
             res.status(400).json({ error: error.message });
         }
         else {
-            res.status(400).json({ error: 'Erro desconhecido' });
+            res.status(500).json({ error: 'Erro desconhecido' });
         }
     }
 }));

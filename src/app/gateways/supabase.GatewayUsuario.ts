@@ -1,6 +1,6 @@
 import IGatewayUsuario from "./interfaces/IGatewayUsuario";
-import Usuario from "../../domain/models/usuario";
-import { supabase } from "../../infra/supabaseClient";
+import Usuario from "../../domain/models/Usuario";
+import { supabase } from "../../infra/client.Supabase";
 
 export default class GatewayUsuario implements IGatewayUsuario {
     async cadastrarUsuario(usuario: Usuario): Promise<Usuario> {
@@ -13,6 +13,11 @@ export default class GatewayUsuario implements IGatewayUsuario {
         if (error) {
             throw new Error(`Erro ao cadastrar usuário: ${error.message}`);
         }
+
+        return usuario;
+    }
+
+    async loginUsuario(usuario: Usuario): Promise<Usuario> {
 
         return usuario;
     }
@@ -34,7 +39,7 @@ export default class GatewayUsuario implements IGatewayUsuario {
         ));
     }
 
-    async pesquisarUsuarioIdPorTelefone(telefone: number): Promise<string> {
+    async pesquisarUsuarioIdPorTelefone(telefone: string): Promise<string> {
         const { data, error } = await supabase
             .from('usuarios')
             .select()

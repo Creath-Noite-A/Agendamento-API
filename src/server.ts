@@ -6,13 +6,30 @@ import router from './presentation/router';
 dotenv.config({ path: './.env' });
 
 const app = express();
-app.use(express.json());
 
-// Criação de usuário
-app.use('/api', router.criarUsuario);
+// Requests
+
+app.get('/', (req, res) => {
+    // :)
+    res.send(
+        '<h1>Creath Seletiva</h1>' +
+        '<p style="color: red">Agendamento API!!! 🕺💃</p>'
+    );
+});
+
+app.use('/criarHorario', router.criarHorario);
+
+app.use('/criarUsuario', router.criarUsuario);
+
+// App port e listen
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
+if(!process.env.PORT) {
+    throw new Error('Erro: arquivo \".env\" não encontrado na root do projeto');
+}
+else {
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando na porta ${PORT}`);
+    });
+}
