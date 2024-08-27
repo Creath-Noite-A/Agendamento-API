@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import Usuario from "../../domain/models/Usuario";
 import IGatewayUsuario from "../gateways/interfaces/IGatewayUsuario";
 
-export default class CriarUsuario {
+export default class EntrarUsuario {
     private gateway: IGatewayUsuario;
 
     constructor(gateway: IGatewayUsuario) {
