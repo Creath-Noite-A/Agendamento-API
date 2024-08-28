@@ -9,7 +9,7 @@ export default class CriarUsuario {
     }
 
     async execute(dadosUsuario: {telefone: number, nome: string, senha: string }): Promise<Usuario> {
-        const {telefone, nome, senha } = dadosUsuario;
+        const {telefone, nome, senha} = dadosUsuario;
 
         if (!telefone || !nome || !senha) {
             throw new Error('Todos os campos são obrigatórios.');

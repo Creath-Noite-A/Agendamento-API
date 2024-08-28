@@ -13,25 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const criarUsuario_1 = __importDefault(require("../../app/usecases/criarUsuario"));
 const gatewayUsuarioSupabase_1 = __importDefault(require("../../app/gateways/gatewayUsuarioSupabase"));
+const autenticarUsuario_1 = __importDefault(require("../../app/usecases/autenticarUsuario"));
 const router = express_1.default.Router();
-const gatewayUsuarioSupabase = new gatewayUsuarioSupabase_1.default();
-const criarUsuario = new criarUsuario_1.default(gatewayUsuarioSupabase);
-router.use(express_1.default.json());
-router.post('/usuario', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const autenticarUsuario = new autenticarUsuario_1.default(new gatewayUsuarioSupabase_1.default());
+router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { telefone, nome, senha } = req.body;
-        const usuarioCriado = yield criarUsuario.execute({ telefone, nome, senha });
-        res.status(201).json(usuarioCriado);
+        const { telefone, senha } = req.body;
+        const token = yield autenticarUsuario.execute({ telefone, senha });
+        res.json({ token });
     }
     catch (error) {
-        if (error instanceof Error) {
-            res.status(400).json({ error: error.message });
-        }
-        else {
-            res.status(400).json({ error: 'Erro desconhecido' });
-        }
+        res.status(400).json({ error: error.message || 'Erro ao autenticar o usuário.' });
     }
 }));
 exports.default = router;

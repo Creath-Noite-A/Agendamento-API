@@ -1,20 +1,25 @@
-import iGatewayUsuario from "./iGatewayUsuario";
+import IGatewayUsuario from "./iGatewayUsuario";
 import Usuario from "../../domain/models/usuario";
 import { supabase } from "../../infra/supabaseClient";
+import bcrypt from "bcryptjs";
 
-export default class gatewayUsuarioSupabase implements iGatewayUsuario {
+export default class GatewayUsuarioSupabase implements IGatewayUsuario {
     async cadastrarUsuario(usuario: Usuario): Promise<Usuario> {
+        
+        const senhaCriptografada = await bcrypt.hash(usuario.senha, 10);
+
         const { data, error } = await supabase
             .from('usuarios')
             .insert([
-                { telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
-            ]);
+                { telefone: usuario.telefone, nome: usuario.nome, senha: senhaCriptografada }
+            ])
+            .single();
 
         if (error) {
             throw new Error(`Erro ao cadastrar usuário: ${error.message}`);
         }
 
-        return usuario;
+        return new Usuario(data['telefone'], data['nome'], data['senha']);
     }
 
     async listarUsuarios(): Promise<Array<Usuario>> {

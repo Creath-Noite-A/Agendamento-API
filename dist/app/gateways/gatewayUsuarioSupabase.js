@@ -14,18 +14,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const usuario_1 = __importDefault(require("../../domain/models/usuario"));
 const supabaseClient_1 = require("../../infra/supabaseClient");
-class gatewayUsuarioSupabase {
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+class GatewayUsuarioSupabase {
     cadastrarUsuario(usuario) {
         return __awaiter(this, void 0, void 0, function* () {
+            const senhaCriptografada = yield bcryptjs_1.default.hash(usuario.senha, 10);
             const { data, error } = yield supabaseClient_1.supabase
                 .from('usuarios')
                 .insert([
-                { telefone: usuario.telefone, nome: usuario.nome, senha: usuario.senha }
-            ]);
+                { telefone: usuario.telefone, nome: usuario.nome, senha: senhaCriptografada }
+            ])
+                .single();
             if (error) {
                 throw new Error(`Erro ao cadastrar usuário: ${error.message}`);
             }
-            return usuario;
+            return new usuario_1.default(data['telefone'], data['nome'], data['senha']);
         });
     }
     listarUsuarios() {
@@ -40,4 +43,4 @@ class gatewayUsuarioSupabase {
         });
     }
 }
-exports.default = gatewayUsuarioSupabase;
+exports.default = GatewayUsuarioSupabase;
