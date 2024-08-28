@@ -1,7 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import cookies from 'cookie-parser';
+
 import session from 'express-session';
+
+import { v4 } from 'uuid';
 
 import router from './presentation/router';
 
@@ -9,19 +11,17 @@ dotenv.config({ path: './.env' });
 
 const app = express();
 
-// Requests
+app.use(session({
+    secret: 'keyboard cat',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        secure: true,
+        maxAge: 60000 * 10
+    }
+}));
 
-app.get('/', (req, res) => {
-    // :)
-    res.send(
-        '<h1>Creath Seletiva</h1>' +
-        '<p style="color: red">Agendamento API!!! 🕺💃</p>'
-    );
-});
-
-app.use('/criarHorario', router.criarHorario);
-
-app.use('/criarUsuario', router.criarUsuario);
+app.use('/', router);
 
 // App port e listen
 
@@ -32,6 +32,7 @@ if(!process.env.PORT) {
 }
 else {
     app.listen(PORT, () => {
+        // http://localhost:{PORT GOES HERE}
         console.log(`Servidor rodando na porta ${PORT}`);
     });
 }

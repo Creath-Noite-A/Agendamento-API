@@ -17,7 +17,7 @@ router.post('/', async (req: Request, res: Response) => {
             { telefone, senha }
         );
         
-        res.status(201).json(usuarioFetch);
+        return res.status(201).json(usuarioFetch);
     } catch (error) {
         if (error instanceof Error) {
             res.status(400).json({ error: error.message });

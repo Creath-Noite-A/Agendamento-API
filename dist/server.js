@@ -5,17 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const express_session_1 = __importDefault(require("express-session"));
 const router_1 = __importDefault(require("./presentation/router"));
 dotenv_1.default.config({ path: './.env' });
 const app = (0, express_1.default)();
-// Requests
-app.get('/', (req, res) => {
-    // :)
-    res.send('<h1>Creath Seletiva</h1>' +
-        '<p style="color: red">Agendamento API!!! 🕺💃</p>');
-});
-app.use('/criarHorario', router_1.default.criarHorario);
-app.use('/criarUsuario', router_1.default.criarUsuario);
+app.use((0, express_session_1.default)({
+    secret: 'keyboard cat',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        secure: true,
+        maxAge: 60000 * 10
+    }
+}));
+app.use('/', router_1.default);
 // App port e listen
 const PORT = process.env.PORT || 3000;
 if (!process.env.PORT) {
@@ -23,6 +26,7 @@ if (!process.env.PORT) {
 }
 else {
     app.listen(PORT, () => {
+        // http://localhost:{PORT GOES HERE}
         console.log(`Servidor rodando na porta ${PORT}`);
     });
 }

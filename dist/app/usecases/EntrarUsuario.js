@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const brasilapi_js_1 = __importDefault(require("brasilapi-js"));
 const Usuario_1 = __importDefault(require("../../domain/models/Usuario"));
-class CriarUsuario {
+class EntrarUsuario {
     constructor(gateway) {
         this.gateway = gateway;
     }
@@ -44,4 +44,4 @@ class CriarUsuario {
         });
     }
 }
-exports.default = CriarUsuario;
+exports.default = EntrarUsuario;
