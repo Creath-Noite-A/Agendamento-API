@@ -17,10 +17,10 @@ const client_Supabase_1 = require("../../infra/client.Supabase");
 class GatewayHorario {
     gerarHorario(horario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, dia, hora } = horario;
+            const { id, dia, hora, minutos } = horario;
             const { data, error } = yield client_Supabase_1.supabase
                 .from("horarios")
-                .insert([{ id, dia, hora }]);
+                .insert([{ id, dia, hora, minutos }]);
             if (error) {
                 throw new Error(`Erro ao cadastrar horário: ${error.message}`);
             }

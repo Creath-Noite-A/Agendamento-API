@@ -4,11 +4,11 @@ import { supabase } from "../../infra/client.Supabase";
 
 export default class GatewayHorario implements IGatewayHorario {
   async gerarHorario(horario: Horario): Promise<Horario> {
-    const { id, dia, hora } = horario;
+    const { id, dia, hora, minutos } = horario;
 
     const { data, error } = await supabase
       .from("horarios")
-      .insert([{ id, dia, hora }]);
+      .insert([{ id, dia, hora, minutos }]);
 
     if (error) {
       throw new Error(`Erro ao cadastrar horário: ${error.message}`);

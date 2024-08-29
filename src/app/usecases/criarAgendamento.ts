@@ -26,13 +26,13 @@ export default class CriarAgendamento {
       telefone: string;
     },
     dadosAgendamento: {
-      dataMarcada: Date;
+      dataMarcada: string;
     }
   ): Promise<Agendamento> {
     const { dataMarcada } = dadosAgendamento;
     const { telefone } = dadosUsuario;
 
-    if (!telefone || !dataMarcada) {
+    if (telefone == null || dataMarcada == null) {
       throw new TypeError("Erro: Parâmetro(s) nulo(s)");
     }
 
@@ -46,14 +46,16 @@ export default class CriarAgendamento {
       );
     }
 
+    const dataParse = new Date(dataMarcada);
+
     if (
-      dataMarcada.getTime() < Date.now() ||
-      (dataMarcada.getTime() - Date.now()) / (1000 * 60 * 60 * 24) >= 14
+      dataParse.getTime() < Date.now() ||
+      (dataParse.getTime() - Date.now()) / (1000 * 60 * 60 * 24) >= 14
     ) {
       throw new Error("Data indisponível");
     }
 
-    if (!(await this.gatewayAgendamento.verificarDataMarcada(dataMarcada))) {
+    if (!(await this.gatewayAgendamento.verificarDataMarcada(dataParse))) {
       throw new Error("Data já marcada por outro cliente");
     }
 
@@ -61,9 +63,9 @@ export default class CriarAgendamento {
       !(await this.gatewayHorario.verificarHorario(
         new Horario(
           null,
-          dataMarcada.getDay(),
-          dataMarcada.getHours(),
-          dataMarcada.getMinutes()
+          dataParse.getDay(),
+          dataParse.getHours(),
+          dataParse.getMinutes()
         )
       ))
     ) {
@@ -73,7 +75,7 @@ export default class CriarAgendamento {
     const id = v4();
 
     return await this.gatewayAgendamento.criarAgendamento(
-      new Agendamento(id, usuario.id, dataMarcada)
+      new Agendamento(id, usuario.id, dataParse)
     );
   }
 }

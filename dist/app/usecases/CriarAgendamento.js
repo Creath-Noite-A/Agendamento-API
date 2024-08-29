@@ -25,25 +25,26 @@ class CriarAgendamento {
         return __awaiter(this, void 0, void 0, function* () {
             const { dataMarcada } = dadosAgendamento;
             const { telefone } = dadosUsuario;
-            if (!telefone || !dataMarcada) {
+            if (telefone == null || dataMarcada == null) {
                 throw new TypeError("Erro: Parâmetro(s) nulo(s)");
             }
             const usuario = yield this.gatewayUsuario.pesquisarUsuarioPorTelefone(telefone);
             if (!usuario.id) {
                 throw new Error("Erro: não foi possível criar agendamento com tal usuário");
             }
-            if (dataMarcada.getTime() < Date.now() ||
-                (dataMarcada.getTime() - Date.now()) / (1000 * 60 * 60 * 24) >= 14) {
+            const dataParse = new Date(dataMarcada);
+            if (dataParse.getTime() < Date.now() ||
+                (dataParse.getTime() - Date.now()) / (1000 * 60 * 60 * 24) >= 14) {
                 throw new Error("Data indisponível");
             }
-            if (!(yield this.gatewayAgendamento.verificarDataMarcada(dataMarcada))) {
+            if (!(yield this.gatewayAgendamento.verificarDataMarcada(dataParse))) {
                 throw new Error("Data já marcada por outro cliente");
             }
-            if (!(yield this.gatewayHorario.verificarHorario(new Horario_1.default(null, dataMarcada.getDay(), dataMarcada.getHours(), dataMarcada.getMinutes())))) {
+            if (!(yield this.gatewayHorario.verificarHorario(new Horario_1.default(null, dataParse.getDay(), dataParse.getHours(), dataParse.getMinutes())))) {
                 throw new Error("Data indisponível");
             }
             const id = (0, uuid_1.v4)();
-            return yield this.gatewayAgendamento.criarAgendamento(new Agendamento_1.default(id, usuario.id, dataMarcada));
+            return yield this.gatewayAgendamento.criarAgendamento(new Agendamento_1.default(id, usuario.id, dataParse));
         });
     }
 }

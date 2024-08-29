@@ -7,8 +7,6 @@ const router = Router();
 const gatewayUsuario = new GatewayUsuario();
 const criarUsuario = new CriarUsuario(gatewayUsuario);
 
-router.use(express.json());
-
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { telefone, nome, senha } = req.body;

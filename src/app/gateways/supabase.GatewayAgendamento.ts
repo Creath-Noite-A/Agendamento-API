@@ -7,9 +7,22 @@ export default class GatewayAgendamento implements IGatewayAgendamento {
   async criarAgendamento(agendamento: Agendamento): Promise<Agendamento> {
     const { id, usuarioId, dataMarcada } = agendamento;
 
+    const dataRegistro =
+      dataMarcada?.toLocaleDateString() +
+      " " +
+      dataMarcada?.toLocaleTimeString();
+
+    console.log(dataRegistro);
+
+    if (dataRegistro == null) {
+      throw new TypeError(
+        "Não foi possível converter Date para Timezone na conexão com o banco de dados"
+      );
+    }
+
     const { data, error } = await supabase
       .from("agendamentos")
-      .insert([{ id, usuarioId, dataMarcada }]);
+      .insert([{ id, usuarioId, dataMarcada: dataRegistro }]);
 
     if (error) {
       throw new Error(`Erro ao marcar agendamento: ${error.message}`);
@@ -24,22 +37,36 @@ export default class GatewayAgendamento implements IGatewayAgendamento {
     const { data, error } = await supabase
       .from("agendamentos")
       .select("*")
-      .eq("usuarioId", usuario);
+      .eq("usuarioId", usuario.id);
 
     if (error) {
       throw new Error(`Erro ao buscar agendamentos ${error.message}`);
     }
 
     return data.map(
-      (item: any) => new Agendamento(item.id, usuario.id, item.dataMarcada)
+      (item: any) =>
+        new Agendamento(item.id, usuario.id, new Date(item.dataMarcada))
     );
   }
 
   async verificarDataMarcada(dataMarcada: Date): Promise<boolean> {
+    const dataRegistro =
+      dataMarcada?.toLocaleDateString() +
+      " " +
+      dataMarcada?.toLocaleTimeString();
+
+    console.log(dataRegistro);
+
+    if (dataRegistro == null) {
+      throw new TypeError(
+        "Não foi possível converter Date para Timezone na conexão com o banco de dados"
+      );
+    }
+
     const { data, error } = await supabase
       .from("agendamentos")
       .select("id")
-      .eq("dataMarcada", dataMarcada);
+      .eq("dataMarcada", dataRegistro);
 
     if (error) {
       throw new Error(`Erro ao buscar agendamentos ${error.message}`);

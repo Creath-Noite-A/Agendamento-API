@@ -1,4 +1,3 @@
-import brasilApi from "brasilapi-js";
 import bcrypt from "bcrypt";
 
 import Usuario from "../../domain/models/Usuario";
@@ -17,7 +16,7 @@ export default class EntrarUsuario {
   }): Promise<Usuario> {
     const { telefone, senha } = dadosUsuario;
 
-    if (!telefone || !senha) {
+    if (telefone == null || senha == null) {
       throw new Error("Todos os campos são obrigatórios.");
     }
 
@@ -27,12 +26,6 @@ export default class EntrarUsuario {
 
     if (isNaN(Number(telefone)) || !Number.isInteger(Number(telefone))) {
       throw new Error("Número de telefone deve conter somente dígitos");
-    }
-
-    const ddd = await brasilApi.ddd.getBy(telefone.substring(0, 2));
-
-    if (ddd.status === 404) {
-      throw new Error("DDD do número de telefone inválido");
     }
 
     if (senha.length < 8) {

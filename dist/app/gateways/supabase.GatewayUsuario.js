@@ -41,9 +41,9 @@ class GatewayUsuario {
             const { data, error } = yield client_Supabase_1.supabase
                 .from("usuarios")
                 .select()
-                .is("telefone", telefone);
+                .eq("telefone", telefone);
             if (error) {
-                throw new Error(`Erro ao pesquisar id de usuário por telefone: ${error.message}`);
+                throw new Error(`Erro ao pesquisar usuário por telefone: ${error.message}`);
             }
             if (data.length > 1) {
                 throw new Error(`Problema ao pesquisar usuário: id duplicado no banco de dados`);

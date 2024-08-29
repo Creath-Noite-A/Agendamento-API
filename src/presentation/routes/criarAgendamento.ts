@@ -16,8 +16,6 @@ const criarAgendamento = new CriarAgendamento(
   gatewayAgendamento
 );
 
-router.use(express.json());
-
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { telefone, dataMarcada } = req.body;

@@ -19,7 +19,7 @@ export default class BuscarAgendamento {
   }): Promise<Array<Agendamento>> {
     const { telefone } = dadosUsuario;
 
-    if (!telefone) {
+    if (telefone == null) {
       throw new Error("Erro: Parâmetro nulo");
     }
 

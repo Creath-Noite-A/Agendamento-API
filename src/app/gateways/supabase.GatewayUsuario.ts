@@ -33,11 +33,11 @@ export default class GatewayUsuario implements IGatewayUsuario {
     const { data, error } = await supabase
       .from("usuarios")
       .select()
-      .is("telefone", telefone);
+      .eq("telefone", telefone);
 
     if (error) {
       throw new Error(
-        `Erro ao pesquisar id de usuário por telefone: ${error.message}`
+        `Erro ao pesquisar usuário por telefone: ${error.message}`
       );
     }
 

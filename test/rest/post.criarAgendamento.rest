@@ -1,0 +1,7 @@
+POST http://localhost:8000/api/criarAgendamento
+Content-Type: application/json
+
+{
+    "telefone": "13992014999",
+    "dataMarcada": "2024-9-1 13:00"
+}

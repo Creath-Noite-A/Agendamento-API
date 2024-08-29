@@ -7,15 +7,13 @@ const router = Router();
 const gatewayUsuario = new GatewayUsuario();
 const entrarUsuario = new EntrarUsuario(gatewayUsuario);
 
-router.use(express.json());
-
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { telefone, senha } = req.body;
 
     const usuarioFetch = await entrarUsuario.execute({ telefone, senha });
 
-    return res.status(200).json(usuarioFetch);
+    res.status(200).json(usuarioFetch);
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ error: error.message });

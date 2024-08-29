@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const brasilapi_js_1 = __importDefault(require("brasilapi-js"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Usuario_1 = __importDefault(require("../../domain/models/Usuario"));
 class EntrarUsuario {
@@ -22,7 +21,7 @@ class EntrarUsuario {
     execute(dadosUsuario) {
         return __awaiter(this, void 0, void 0, function* () {
             const { telefone, senha } = dadosUsuario;
-            if (!telefone || !senha) {
+            if (telefone == null || senha == null) {
                 throw new Error("Todos os campos são obrigatórios.");
             }
             if (telefone.length != 11) {
@@ -30,10 +29,6 @@ class EntrarUsuario {
             }
             if (isNaN(Number(telefone)) || !Number.isInteger(Number(telefone))) {
                 throw new Error("Número de telefone deve conter somente dígitos");
-            }
-            const ddd = yield brasilapi_js_1.default.ddd.getBy(telefone.substring(0, 2));
-            if (ddd.status === 404) {
-                throw new Error("DDD do número de telefone inválido");
             }
             if (senha.length < 8) {
                 throw new Error("Senhas contém no mínimo 8 caracteres");

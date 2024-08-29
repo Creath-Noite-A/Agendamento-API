@@ -17,7 +17,7 @@ class BuscarAgendamento {
     execute(dadosUsuario) {
         return __awaiter(this, void 0, void 0, function* () {
             const { telefone } = dadosUsuario;
-            if (!telefone) {
+            if (telefone == null) {
                 throw new Error("Erro: Parâmetro nulo");
             }
             const usuario = yield this.gatewayUsuario.pesquisarUsuarioPorTelefone(telefone);

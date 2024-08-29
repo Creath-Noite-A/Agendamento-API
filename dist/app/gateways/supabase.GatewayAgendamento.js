@@ -18,9 +18,16 @@ class GatewayAgendamento {
     criarAgendamento(agendamento) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id, usuarioId, dataMarcada } = agendamento;
+            const dataRegistro = (dataMarcada === null || dataMarcada === void 0 ? void 0 : dataMarcada.toLocaleDateString()) +
+                " " +
+                (dataMarcada === null || dataMarcada === void 0 ? void 0 : dataMarcada.toLocaleTimeString());
+            console.log(dataRegistro);
+            if (dataRegistro == null) {
+                throw new TypeError("Não foi possível converter Date para Timezone na conexão com o banco de dados");
+            }
             const { data, error } = yield client_Supabase_1.supabase
                 .from("agendamentos")
-                .insert([{ id, usuarioId, dataMarcada }]);
+                .insert([{ id, usuarioId, dataMarcada: dataRegistro }]);
             if (error) {
                 throw new Error(`Erro ao marcar agendamento: ${error.message}`);
             }
@@ -32,19 +39,26 @@ class GatewayAgendamento {
             const { data, error } = yield client_Supabase_1.supabase
                 .from("agendamentos")
                 .select("*")
-                .eq("usuarioId", usuario);
+                .eq("usuarioId", usuario.id);
             if (error) {
                 throw new Error(`Erro ao buscar agendamentos ${error.message}`);
             }
-            return data.map((item) => new Agendamento_1.default(item.id, usuario.id, item.dataMarcada));
+            return data.map((item) => new Agendamento_1.default(item.id, usuario.id, new Date(item.dataMarcada)));
         });
     }
     verificarDataMarcada(dataMarcada) {
         return __awaiter(this, void 0, void 0, function* () {
+            const dataRegistro = (dataMarcada === null || dataMarcada === void 0 ? void 0 : dataMarcada.toLocaleDateString()) +
+                " " +
+                (dataMarcada === null || dataMarcada === void 0 ? void 0 : dataMarcada.toLocaleTimeString());
+            console.log(dataRegistro);
+            if (dataRegistro == null) {
+                throw new TypeError("Não foi possível converter Date para Timezone na conexão com o banco de dados");
+            }
             const { data, error } = yield client_Supabase_1.supabase
                 .from("agendamentos")
                 .select("id")
-                .eq("dataMarcada", dataMarcada);
+                .eq("dataMarcada", dataRegistro);
             if (error) {
                 throw new Error(`Erro ao buscar agendamentos ${error.message}`);
             }

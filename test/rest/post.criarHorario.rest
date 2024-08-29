@@ -1,0 +1,8 @@
+POST http://localhost:8000/api/criarHorario
+Content-Type: application/json
+
+{
+    "dia": 0,
+    "hora": 13,
+    "minutos": 0
+}

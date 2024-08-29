@@ -21,7 +21,7 @@ class CriarHorario {
     execute(dadosHorario) {
         return __awaiter(this, void 0, void 0, function* () {
             const { dia, hora, minutos } = dadosHorario;
-            if (!dia || !hora || !minutos) {
+            if (dia == null || hora == null || minutos == null) {
                 throw new TypeError("Erro: Parâmetro(s) nulo(s)");
             }
             const id = (0, uuid_1.v4)();

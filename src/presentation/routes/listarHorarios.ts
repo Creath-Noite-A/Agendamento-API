@@ -7,9 +7,7 @@ const router = Router();
 const gatewayHorario = new GatewayHorario();
 const listarHorarios = new ListarHorarios(gatewayHorario);
 
-router.use(express.json());
-
-router.post("/", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const horarioCriado = await listarHorarios.execute();
 

@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const brasilapi_js_1 = __importDefault(require("brasilapi-js"));
 const uuid_1 = require("uuid");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Usuario_1 = __importDefault(require("../../domain/models/Usuario"));
@@ -23,41 +22,34 @@ class CriarUsuario {
     execute(dadosUsuario) {
         return __awaiter(this, void 0, void 0, function* () {
             const { telefone, nome, senha } = dadosUsuario;
-            if (!telefone || !nome || !senha) {
-                throw new Error('Todos os campos são obrigatórios.');
+            if (telefone == null || nome == null || senha == null) {
+                throw new Error("Todos os campos são obrigatórios.");
             }
             if (telefone.length != 11) {
-                throw new Error('Número de telefone inválido');
+                throw new Error("Número de telefone inválido");
             }
             if (isNaN(Number(telefone)) || !Number.isInteger(Number(telefone))) {
-                throw new Error('Número de telefone deve conter somente dígitos');
-            }
-            const ddd = yield brasilapi_js_1.default.ddd.getBy(telefone.substring(0, 2));
-            if (ddd.status === 404) {
-                throw new Error('DDD do número de telefone não encontrado');
-            }
-            if (ddd.status === 500) {
-                throw new Error('Erro desconhecido nos serviços de DDD');
+                throw new Error("Número de telefone deve conter somente dígitos");
             }
             const _nome = nome.trim();
             if (_nome.length < 2) {
-                throw new Error('Nome muito curto');
+                throw new Error("Nome muito curto");
             }
             if (_nome.length > 16) {
-                throw new Error('Reduza um pouco do nome');
+                throw new Error("Reduza um pouco do nome");
             }
             if (!/^[A-Za-záàâãéèêíïóôõöúüçñÁÀÂÃÉÈÍÏÓÔÕÖÚÜÇÑ ]+$/.test(_nome)) {
-                throw new Error('Nome deve conter somente caracteres padrão');
+                throw new Error("Nome deve conter somente caracteres padrão");
             }
             if (senha.length < 8) {
-                throw new Error('A senha deve conter no mínimo 8 caracteres');
+                throw new Error("A senha deve conter no mínimo 8 caracteres");
             }
             if (senha.length > 16) {
-                throw new Error('A senha deve conter no máximo 16 caracteres');
+                throw new Error("A senha deve conter no máximo 16 caracteres");
             }
             if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@.#$!%*?&]{8,16}$/.test(senha)) {
-                throw new Error('A senha deve conter ao menos 1 letra maiúscula, '
-                    + '1 letra minúscula e 1 dígito (permitidos alguns caracteres especiais)');
+                throw new Error("A senha deve conter ao menos 1 letra maiúscula, " +
+                    "1 letra minúscula e 1 dígito (permitidos alguns caracteres especiais)");
             }
             const id = (0, uuid_1.v4)();
             const senhaHash = yield bcrypt_1.default.hash(senha, 10);

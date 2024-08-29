@@ -13,8 +13,6 @@ const buscarAgendamentos = new BuscarAgendamentos(
   gatewayUsuario
 );
 
-router.use(express.json());
-
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { telefone } = req.body;
