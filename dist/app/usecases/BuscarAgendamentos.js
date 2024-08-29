@@ -8,25 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const uuid_1 = require("uuid");
-const Horario_1 = __importDefault(require("../../domain/models/Horario"));
-class CriarHorario {
-    constructor(gateway) {
-        this.gateway = gateway;
+class BuscarAgendamento {
+    constructor(gatewayAgendamento, gatewayUsuario) {
+        this.gatewayAgendamento = gatewayAgendamento;
+        this.gatewayUsuario = gatewayUsuario;
     }
-    execute(dadosHorario) {
+    execute(dadosUsuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { dia, hora, minutos } = dadosHorario;
-            if (!dia || !hora || !minutos) {
-                throw new TypeError("Erro: Parâmetro(s) nulo(s)");
+            const { telefone } = dadosUsuario;
+            if (!telefone) {
+                throw new Error("Erro: Parâmetro nulo");
             }
-            const id = (0, uuid_1.v4)();
-            return yield this.gateway.gerarHorario(new Horario_1.default(id, dia, hora, minutos));
+            const usuario = yield this.gatewayUsuario.pesquisarUsuarioPorTelefone(telefone);
+            if (!usuario) {
+                throw new Error("Usuário não encontrado");
+            }
+            return yield this.gatewayAgendamento.buscarAgendamentosPorUsuario(usuario);
         });
     }
 }
-exports.default = CriarHorario;
+exports.default = BuscarAgendamento;

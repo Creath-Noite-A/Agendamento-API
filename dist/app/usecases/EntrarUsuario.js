@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const brasilapi_js_1 = __importDefault(require("brasilapi-js"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const Usuario_1 = __importDefault(require("../../domain/models/Usuario"));
 class EntrarUsuario {
     constructor(gateway) {
@@ -22,25 +23,35 @@ class EntrarUsuario {
         return __awaiter(this, void 0, void 0, function* () {
             const { telefone, senha } = dadosUsuario;
             if (!telefone || !senha) {
-                throw new Error('Todos os campos são obrigatórios.');
+                throw new Error("Todos os campos são obrigatórios.");
             }
             if (telefone.length != 11) {
-                throw new Error('Número de telefone inválido');
+                throw new Error("Número de telefone inválido");
             }
             if (isNaN(Number(telefone)) || !Number.isInteger(Number(telefone))) {
-                throw new Error('Número de telefone deve conter somente dígitos');
+                throw new Error("Número de telefone deve conter somente dígitos");
             }
             const ddd = yield brasilapi_js_1.default.ddd.getBy(telefone.substring(0, 2));
             if (ddd.status === 404) {
-                throw new Error('DDD do número de telefone inválido');
+                throw new Error("DDD do número de telefone inválido");
             }
             if (senha.length < 8) {
-                throw new Error('Senhas contém no mínimo 8 caracteres');
+                throw new Error("Senhas contém no mínimo 8 caracteres");
             }
             if (senha.length > 16) {
-                throw new Error('Senhas contém no máximo 16 caracteres');
+                throw new Error("Senhas contém no máximo 16 caracteres");
             }
-            return yield this.gateway.loginUsuario(new Usuario_1.default(null, telefone, null, senha));
+            const resul = yield this.gateway.pesquisarUsuarioPorTelefone(telefone);
+            if (!resul) {
+                throw new Error("Credenciais inválidas");
+            }
+            if (!resul.senha) {
+                throw new Error("Erro desconhecido");
+            }
+            if (!(yield bcrypt_1.default.compare(senha, resul.senha))) {
+                throw new Error("Credenciais inválidas");
+            }
+            return yield new Usuario_1.default(null, telefone, resul.nome, senha);
         });
     }
 }

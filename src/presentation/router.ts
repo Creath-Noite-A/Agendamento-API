@@ -1,26 +1,23 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import criarAgendamento from './routes/criarAgendamento';
-import criarHorario from './routes/criarHorario';
-import criarUsuario from './routes/criarUsuario';
+import root from "./routes/root";
+import criarAgendamento from "./routes/criarAgendamento";
+import criarHorario from "./routes/criarHorario";
+import criarUsuario from "./routes/criarUsuario";
 
 const router = Router();
 
-// Default page
-router.get('/', (req, res) => {
-    // :)
-    console.log(req.session);
-    console.log(req.session.id);
-    res.send(
-        '<h1>Creath Seletiva</h1>' +
-        '<p style="color: red">Agendamento API!!! 🕺💃</p>'
-    );
-});
+// Root page
+router.use("/", root);
 
 // Criar Horário
-router.use('/api/criarHorario', criarHorario);
+router.use("/api/criarHorario", criarHorario);
 
 // Criar Usuário
-router.use('/api/criarUsuario', criarUsuario);
+router.use("/api/criarUsuario", criarUsuario);
+
+router.get("/endpoint", (req, res) => {
+  res.send("Hello World");
+});
 
 export default router;

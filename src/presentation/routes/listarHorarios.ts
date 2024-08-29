@@ -1,21 +1,19 @@
 import express, { Request, Response, Router } from "express";
 
-import EntrarUsuario from "../../app/usecases/EntrarUsuario";
-import GatewayUsuario from "../../app/gateways/supabase.GatewayUsuario";
+import ListarHorarios from "../../app/usecases/ListarHorarios";
+import GatewayHorario from "../../app/gateways/supabase.GatewayHorario";
 
 const router = Router();
-const gatewayUsuario = new GatewayUsuario();
-const entrarUsuario = new EntrarUsuario(gatewayUsuario);
+const gatewayHorario = new GatewayHorario();
+const listarHorarios = new ListarHorarios(gatewayHorario);
 
 router.use(express.json());
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    const { telefone, senha } = req.body;
+    const horarioCriado = await listarHorarios.execute();
 
-    const usuarioFetch = await entrarUsuario.execute({ telefone, senha });
-
-    return res.status(200).json(usuarioFetch);
+    res.status(200).json(horarioCriado);
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ error: error.message });

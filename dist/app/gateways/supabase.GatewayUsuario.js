@@ -19,7 +19,7 @@ class GatewayUsuario {
         return __awaiter(this, void 0, void 0, function* () {
             const { id, telefone, nome, senha } = usuario;
             const { data, error } = yield client_Supabase_1.supabase
-                .from('usuarios')
+                .from("usuarios")
                 .insert([{ id, telefone, nome, senha }]);
             if (error) {
                 throw new Error(`Erro ao cadastrar usuário: ${error.message}`);
@@ -27,35 +27,29 @@ class GatewayUsuario {
             return usuario;
         });
     }
-    loginUsuario(usuario) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return usuario;
-        });
-    }
     listarUsuarios() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, error } = yield client_Supabase_1.supabase
-                .from('usuarios')
-                .select('*');
+            const { data, error } = yield client_Supabase_1.supabase.from("usuarios").select("*");
             if (error) {
                 throw new Error(`Erro ao listar usuários: ${error.message}`);
             }
             return data.map((item) => new Usuario_1.default(item.id, item.telefone, item.nome, item.senha));
         });
     }
-    pesquisarUsuarioIdPorTelefone(telefone) {
+    pesquisarUsuarioPorTelefone(telefone) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data, error } = yield client_Supabase_1.supabase
-                .from('usuarios')
+                .from("usuarios")
                 .select()
-                .is('telefone', telefone);
+                .is("telefone", telefone);
             if (error) {
                 throw new Error(`Erro ao pesquisar id de usuário por telefone: ${error.message}`);
             }
             if (data.length > 1) {
                 throw new Error(`Problema ao pesquisar usuário: id duplicado no banco de dados`);
             }
-            return data[0].id;
+            const usuario = data[0];
+            return new Usuario_1.default(usuario.id, usuario.telefone, usuario.nome, usuario.senha);
         });
     }
 }

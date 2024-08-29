@@ -1,33 +1,27 @@
 import express, { Request, Response, Router } from "express";
 
-import CriarAgendamento from "../../app/usecases/CriarAgendamento";
+import BuscarAgendamentos from "../../app/usecases/BuscarAgendamentos";
 import GatewayUsuario from "../../app/gateways/supabase.GatewayUsuario";
-import GatewayHorario from "../../app/gateways/supabase.GatewayHorario";
 import GatewayAgendamento from "../../app/gateways/supabase.GatewayAgendamento";
 
 const router = Router();
 const gatewayUsuario = new GatewayUsuario();
 const gatewayAgendamento = new GatewayAgendamento();
-const gatewayHorario = new GatewayHorario();
 
-const criarAgendamento = new CriarAgendamento(
-  gatewayUsuario,
-  gatewayHorario,
-  gatewayAgendamento
+const buscarAgendamentos = new BuscarAgendamentos(
+  gatewayAgendamento,
+  gatewayUsuario
 );
 
 router.use(express.json());
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    const { telefone, dataMarcada } = req.body;
+    const { telefone } = req.body;
 
-    const agendamentoCriado = await criarAgendamento.execute(
-      { telefone },
-      { dataMarcada }
-    );
+    const queryAgendamento = await buscarAgendamentos.execute({ telefone });
 
-    res.status(201).json(agendamentoCriado);
+    res.status(200).json(queryAgendamento);
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ error: error.message });

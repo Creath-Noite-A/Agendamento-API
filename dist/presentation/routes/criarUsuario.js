@@ -42,7 +42,7 @@ const router = (0, express_1.Router)();
 const gatewayUsuario = new supabase_GatewayUsuario_1.default();
 const criarUsuario = new CriarUsuario_1.default(gatewayUsuario);
 router.use(express_1.default.json());
-router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { telefone, nome, senha } = req.body;
         const usuarioCriado = yield criarUsuario.execute({ telefone, nome, senha });
@@ -53,7 +53,7 @@ router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(400).json({ error: error.message });
         }
         else {
-            res.status(500).json({ error: 'Erro desconhecido' });
+            res.status(500).json({ error: "Erro desconhecido" });
         }
     }
 }));

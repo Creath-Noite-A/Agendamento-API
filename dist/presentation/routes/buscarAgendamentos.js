@@ -36,21 +36,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importStar(require("express"));
-const CriarAgendamento_1 = __importDefault(require("../../app/usecases/CriarAgendamento"));
+const BuscarAgendamentos_1 = __importDefault(require("../../app/usecases/BuscarAgendamentos"));
 const supabase_GatewayUsuario_1 = __importDefault(require("../../app/gateways/supabase.GatewayUsuario"));
-const supabase_GatewayHorario_1 = __importDefault(require("../../app/gateways/supabase.GatewayHorario"));
 const supabase_GatewayAgendamento_1 = __importDefault(require("../../app/gateways/supabase.GatewayAgendamento"));
 const router = (0, express_1.Router)();
 const gatewayUsuario = new supabase_GatewayUsuario_1.default();
 const gatewayAgendamento = new supabase_GatewayAgendamento_1.default();
-const gatewayHorario = new supabase_GatewayHorario_1.default();
-const criarAgendamento = new CriarAgendamento_1.default(gatewayUsuario, gatewayHorario, gatewayAgendamento);
+const buscarAgendamentos = new BuscarAgendamentos_1.default(gatewayAgendamento, gatewayUsuario);
 router.use(express_1.default.json());
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { telefone, dataMarcada } = req.body;
-        const agendamentoCriado = yield criarAgendamento.execute({ telefone }, { dataMarcada });
-        res.status(201).json(agendamentoCriado);
+        const { telefone } = req.body;
+        const queryAgendamento = yield buscarAgendamentos.execute({ telefone });
+        res.status(200).json(queryAgendamento);
     }
     catch (error) {
         if (error instanceof Error) {

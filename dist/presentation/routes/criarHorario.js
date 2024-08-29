@@ -42,10 +42,10 @@ const router = (0, express_1.Router)();
 const gatewayHorario = new supabase_GatewayHorario_1.default();
 const criarHorario = new CriarHorario_1.default(gatewayHorario);
 router.use(express_1.default.json());
-router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { dia, hora } = req.body;
-        const horarioCriado = yield criarHorario.execute({ dia, hora });
+        const { dia, hora, minutos } = req.body;
+        const horarioCriado = yield criarHorario.execute({ dia, hora, minutos });
         res.status(201).json(horarioCriado);
     }
     catch (error) {
@@ -53,7 +53,7 @@ router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(400).json({ error: error.message });
         }
         else {
-            res.status(500).json({ error: 'Erro desconhecido' });
+            res.status(500).json({ error: "Erro desconhecido" });
         }
     }
 }));
