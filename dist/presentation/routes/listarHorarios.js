@@ -20,15 +20,19 @@ const gatewayHorario = new supabase_GatewayHorario_1.default();
 const listarHorarios = new ListarHorarios_1.default(gatewayHorario);
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const horarioCriado = yield listarHorarios.execute();
-        res.status(200).json(horarioCriado);
+        const horarioLista = yield listarHorarios.execute();
+        res.status(200).json({
+            message: "Requisição de lista feita com sucesso",
+            data: horarioLista,
+            error: false,
+        });
     }
     catch (error) {
         if (error instanceof Error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: true, message: error.message });
         }
         else {
-            res.status(500).json({ error: "Erro desconhecido" });
+            res.status(500).json({ error: true, message: "Erro desconhecido" });
         }
     }
 }));

@@ -32,7 +32,7 @@ export default class GatewayUsuario implements IGatewayUsuario {
   async pesquisarUsuarioPorTelefone(telefone: string): Promise<Usuario> {
     const { data, error } = await supabase
       .from("usuarios")
-      .select()
+      .select("*")
       .eq("telefone", telefone);
 
     if (error) {

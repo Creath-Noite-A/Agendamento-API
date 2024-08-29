@@ -8,11 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Agendamento_1 = __importDefault(require("../../domain/models/Agendamento"));
 const client_Supabase_1 = require("../../infra/client.Supabase");
 class GatewayAgendamento {
     criarAgendamento(agendamento) {
@@ -43,7 +39,7 @@ class GatewayAgendamento {
             if (error) {
                 throw new Error(`Erro ao buscar agendamentos ${error.message}`);
             }
-            return data.map((item) => new Agendamento_1.default(item.id, usuario.id, new Date(item.dataMarcada)));
+            return data;
         });
     }
     verificarDataMarcada(dataMarcada) {

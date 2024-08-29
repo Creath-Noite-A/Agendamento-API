@@ -40,7 +40,7 @@ class GatewayUsuario {
         return __awaiter(this, void 0, void 0, function* () {
             const { data, error } = yield client_Supabase_1.supabase
                 .from("usuarios")
-                .select()
+                .select("*")
                 .eq("telefone", telefone);
             if (error) {
                 throw new Error(`Erro ao pesquisar usuário por telefone: ${error.message}`);

@@ -24,14 +24,18 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { telefone } = req.body;
         const queryAgendamento = yield buscarAgendamentos.execute({ telefone });
-        res.status(200).json(queryAgendamento);
+        res.status(200).json({
+            message: "Requisição de agendamentos feita com sucesso",
+            data: { queryAgendamento },
+            error: false,
+        });
     }
     catch (error) {
         if (error instanceof Error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: true, message: error.message });
         }
         else {
-            res.status(500).json({ error: "Erro desconhecido" });
+            res.status(500).json({ error: true, message: "Erro desconhecido" });
         }
     }
 }));

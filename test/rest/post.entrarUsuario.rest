@@ -2,7 +2,7 @@ POST http://localhost:8000/api/entrarUsuario
 Content-Type: application/json
 
 {
-    "id": "2c784c0c-863d-4f23-bae2-d46e90c3c5bd",
+    //"id": "2c784c0c-863d-4f23-bae2-d46e90c3c5bd",
     "telefone": "13992014999",
     "senha": "Senha123"
     //"senha": "$2b$10$Bc0pH6NNJ8ryFkNK4puj1uoqIRkY3pYK/NZegBnMw8cTk.EwgsjIi"

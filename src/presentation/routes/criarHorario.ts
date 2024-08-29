@@ -13,12 +13,16 @@ router.post("/", async (req: Request, res: Response) => {
 
     const horarioCriado = await criarHorario.execute({ dia, hora, minutos });
 
-    res.status(201).json(horarioCriado);
+    res.status(201).json({
+      message: "Horário criado com sucesso",
+      data: horarioCriado,
+      error: false,
+    });
   } catch (error) {
     if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
+      res.status(400).json({ error: true, message: error.message });
     } else {
-      res.status(500).json({ error: "Erro desconhecido" });
+      res.status(500).json({ error: true, message: "Erro desconhecido" });
     }
   }
 });

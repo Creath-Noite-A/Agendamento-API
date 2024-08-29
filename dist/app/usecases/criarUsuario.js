@@ -53,7 +53,7 @@ class CriarUsuario {
             }
             const id = (0, uuid_1.v4)();
             const senhaHash = yield bcrypt_1.default.hash(senha, 10);
-            return yield this.gateway.cadastrarUsuario(new Usuario_1.default(null, telefone, null, senha));
+            return yield this.gateway.cadastrarUsuario(new Usuario_1.default(id, telefone, nome, senhaHash));
         });
     }
 }

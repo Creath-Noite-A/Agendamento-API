@@ -21,18 +21,14 @@ export default class CriarAgendamento {
     this.gatewayAgendamento = gatewayAgendamento;
   }
 
-  async execute(
-    dadosUsuario: {
-      telefone: string;
-    },
-    dadosAgendamento: {
-      dataMarcada: string;
-    }
-  ): Promise<Agendamento> {
-    const { dataMarcada } = dadosAgendamento;
-    const { telefone } = dadosUsuario;
+  async execute(dados: {
+    telefone: string;
+    dataMarcada: string;
+  }): Promise<Agendamento> {
+    const { dataMarcada, telefone } = dados;
 
-    if (telefone == null || dataMarcada == null) {
+    console.log(dataMarcada, telefone);
+    if (!telefone || !dataMarcada) {
       throw new TypeError("Erro: Parâmetro(s) nulo(s)");
     }
 
@@ -70,6 +66,19 @@ export default class CriarAgendamento {
       ))
     ) {
       throw new Error("Data indisponível");
+    }
+
+    const queryAgendamentos =
+      await this.gatewayAgendamento.buscarAgendamentosPorUsuario(usuario);
+
+    if (queryAgendamentos != null) {
+      let i = 0;
+      queryAgendamentos.forEach((a) => {
+        if (!a.dataMarcada) return;
+        if (a.dataMarcada?.getTime() >= Date.now()) i++;
+        if (i > 2)
+          throw new Error("Atingiu limite de 2 agendamentos por usuário");
+      });
     }
 
     const id = v4();

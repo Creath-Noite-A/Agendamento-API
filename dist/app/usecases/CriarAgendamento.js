@@ -21,11 +21,11 @@ class CriarAgendamento {
         this.gatewayHorario = gatewayHorario;
         this.gatewayAgendamento = gatewayAgendamento;
     }
-    execute(dadosUsuario, dadosAgendamento) {
+    execute(dados) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { dataMarcada } = dadosAgendamento;
-            const { telefone } = dadosUsuario;
-            if (telefone == null || dataMarcada == null) {
+            const { dataMarcada, telefone } = dados;
+            console.log(dataMarcada, telefone);
+            if (!telefone || !dataMarcada) {
                 throw new TypeError("Erro: Parâmetro(s) nulo(s)");
             }
             const usuario = yield this.gatewayUsuario.pesquisarUsuarioPorTelefone(telefone);
@@ -42,6 +42,19 @@ class CriarAgendamento {
             }
             if (!(yield this.gatewayHorario.verificarHorario(new Horario_1.default(null, dataParse.getDay(), dataParse.getHours(), dataParse.getMinutes())))) {
                 throw new Error("Data indisponível");
+            }
+            const queryAgendamentos = yield this.gatewayAgendamento.buscarAgendamentosPorUsuario(usuario);
+            if (queryAgendamentos != null) {
+                let i = 0;
+                queryAgendamentos.forEach((a) => {
+                    var _a;
+                    if (!a.dataMarcada)
+                        return;
+                    if (((_a = a.dataMarcada) === null || _a === void 0 ? void 0 : _a.getTime()) >= Date.now())
+                        i++;
+                    if (i > 2)
+                        throw new Error("Atingiu limite de 2 agendamentos por usuário");
+                });
             }
             const id = (0, uuid_1.v4)();
             return yield this.gatewayAgendamento.criarAgendamento(new Agendamento_1.default(id, usuario.id, dataParse));

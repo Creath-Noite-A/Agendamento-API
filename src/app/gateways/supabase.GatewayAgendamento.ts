@@ -43,10 +43,7 @@ export default class GatewayAgendamento implements IGatewayAgendamento {
       throw new Error(`Erro ao buscar agendamentos ${error.message}`);
     }
 
-    return data.map(
-      (item: any) =>
-        new Agendamento(item.id, usuario.id, new Date(item.dataMarcada))
-    );
+    return data;
   }
 
   async verificarDataMarcada(dataMarcada: Date): Promise<boolean> {

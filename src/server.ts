@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import router from "./presentation/router";
 
@@ -20,6 +21,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use("/", router);
 

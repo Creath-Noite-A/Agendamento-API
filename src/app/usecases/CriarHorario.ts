@@ -17,7 +17,7 @@ export default class CriarHorario {
   }): Promise<Horario> {
     const { dia, hora, minutos } = dadosHorario;
 
-    if (dia == null || hora == null || minutos == null) {
+    if (dia === null || hora === null || minutos === null) {
       throw new TypeError("Erro: Parâmetro(s) nulo(s)");
     }
 
