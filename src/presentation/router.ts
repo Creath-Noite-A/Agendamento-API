@@ -7,6 +7,7 @@ import criarHorario from "./routes/criarHorario";
 import criarUsuario from "./routes/criarUsuario";
 import entrarUsuario from "./routes/entrarUsuario";
 import listarHorarios from "./routes/listarHorarios";
+import { auth } from "../infra/middleware.tokenAuth";
 
 const router = Router();
 
@@ -14,13 +15,13 @@ const router = Router();
 router.use("/", root);
 
 // Buscar Agendamento
-router.use("/api/buscarAgendamentos", buscarAgendamentos);
+router.use("/api/buscarAgendamentos", auth, buscarAgendamentos);
 
 // Criar Agendamento
-router.use("/api/criarAgendamento", criarAgendamento);
+router.use("/api/criarAgendamento", auth, criarAgendamento);
 
 // Criar Horário
-router.use("/api/criarHorario", criarHorario);
+router.use("/api/criarHorario", auth, criarHorario);
 
 // Criar Usuário
 router.use("/api/criarUsuario", criarUsuario);
@@ -29,10 +30,6 @@ router.use("/api/criarUsuario", criarUsuario);
 router.use("/api/entrarUsuario", entrarUsuario);
 
 // Listar Horários
-router.use("/api/listarHorarios", listarHorarios);
-
-router.get("/api/endpoint", (req, res) => {
-  res.send("Hello World");
-});
+router.use("/api/listarHorarios", auth, listarHorarios);
 
 export default router;

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const EntrarUsuario_1 = __importDefault(require("../../app/usecases/EntrarUsuario"));
 const supabase_GatewayUsuario_1 = __importDefault(require("../../app/gateways/supabase.GatewayUsuario"));
+const middleware_tokenAuth_1 = require("../../infra/middleware.tokenAuth");
 const router = (0, express_1.Router)();
 const gatewayUsuario = new supabase_GatewayUsuario_1.default();
 const entrarUsuario = new EntrarUsuario_1.default(gatewayUsuario);
@@ -22,7 +23,11 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { telefone, senha } = req.body;
         const usuarioFetch = yield entrarUsuario.execute({ telefone, senha });
-        res.status(200).json(usuarioFetch);
+        const usuarioTry = yield (0, middleware_tokenAuth_1.genToken)(usuarioFetch);
+        if (usuarioTry.status === 500 || usuarioTry.status === 400) {
+            throw new Error("Erro desconhecido na geração de token");
+        }
+        res.status(200).json(usuarioTry);
     }
     catch (error) {
         if (error instanceof Error) {

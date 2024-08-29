@@ -1,7 +1,8 @@
-import express, { Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 
 import EntrarUsuario from "../../app/usecases/EntrarUsuario";
 import GatewayUsuario from "../../app/gateways/supabase.GatewayUsuario";
+import { genToken } from "../../infra/middleware.tokenAuth";
 
 const router = Router();
 const gatewayUsuario = new GatewayUsuario();
@@ -13,7 +14,13 @@ router.post("/", async (req: Request, res: Response) => {
 
     const usuarioFetch = await entrarUsuario.execute({ telefone, senha });
 
-    res.status(200).json(usuarioFetch);
+    const usuarioTry = await genToken(usuarioFetch);
+
+    if (usuarioTry.status === 500 || usuarioTry.status === 400) {
+      throw new Error("Erro desconhecido na geração de token");
+    }
+
+    res.status(200).json(usuarioTry);
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ error: error.message });

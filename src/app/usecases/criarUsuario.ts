@@ -66,7 +66,7 @@ export default class CriarUsuario {
     const senhaHash = await bcrypt.hash(senha, 10);
 
     return await this.gateway.cadastrarUsuario(
-      new Usuario(id, telefone, _nome, senhaHash)
+      new Usuario(null, telefone, null, senha)
     );
   }
 }

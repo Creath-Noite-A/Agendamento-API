@@ -50,6 +50,6 @@ export default class EntrarUsuario {
       throw new Error("Credenciais inválidas");
     }
 
-    return await new Usuario(null, telefone, resul.nome, senha);
+    return await new Usuario(resul.id, telefone, resul.nome, senha);
   }
 }

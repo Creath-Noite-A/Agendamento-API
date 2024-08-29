@@ -46,7 +46,7 @@ class EntrarUsuario {
             if (!(yield bcrypt_1.default.compare(senha, resul.senha))) {
                 throw new Error("Credenciais inválidas");
             }
-            return yield new Usuario_1.default(null, telefone, resul.nome, senha);
+            return yield new Usuario_1.default(resul.id, telefone, resul.nome, senha);
         });
     }
 }
